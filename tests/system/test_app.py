@@ -6,10 +6,13 @@ from post import Post
 
 
 class AppTest(TestCase):
+    def setUp(self):
+        blog = Blog('Test', 'Test Author')
+        app.blogs = {'Test': blog}
 
     def test_menue_calls_print_blogs(self):
         with patch('app.print_blogs') as mocked_print_blogs:
-            with patch('builtins.input'):
+            with patch('builtins.input', return_value='q'):
                 app.menue()
                 mocked_print_blogs.assert_called()
 
@@ -19,8 +22,6 @@ class AppTest(TestCase):
             mocked_input.assert_called_with(app.MENUE_PROMT)
 
     def test_print_blpgs(self):
-        blog = Blog('Test', 'Test Author')
-        app.blogs = {'Test': blog}
         with patch('builtins.print') as mocked_print:
             app.print_blogs()
             mocked_print.assert_called_with('- Test by Test Author(0 post)')
@@ -33,8 +34,7 @@ class AppTest(TestCase):
             self.assertIsNotNone(app.blogs.get('Test'))
 
     def test_ask_create_post(self):
-        blog = Blog('Test', 'Test Author')
-        app.blogs = {'Test': blog}
+        blog = app.blogs['Test']
         with patch('builtins.input', return_value='Test'):
             with patch('app.print_posts') as mocked_print_posts:
                 app.ask_read_blog()
@@ -42,8 +42,7 @@ class AppTest(TestCase):
                 mocked_print_posts.assert_called_with(blog)
 
     def test_print_posts(self):
-        blog = Blog('Test', 'Test Author')
-        app.blogs = {'Test': blog}
+        blog = app.blogs['Test']
         blog.create_post('Test', 'Test Content')
         with patch('app.print_post') as mocked_print_post:
             app.print_posts(blog)
@@ -59,8 +58,8 @@ class AppTest(TestCase):
             mocked_print.assert_called_with(expected_print)
 
     def test_ask_create_post(self):
-        blog = Blog('Test', 'Test Author')
-        app.blogs = {'Test': blog}
+        blog = app.blogs['Test']
+
         with patch('builtins.input', ) as mocked_input:
             mocked_input.side_effect = ('Test', 'Post title', 'Post Content')
 
