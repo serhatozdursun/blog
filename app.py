@@ -20,13 +20,13 @@ def menue():
     selection = input(MENUE_PROMT)
     while selection != 'q':
         if selection == 'c':
-            aske_create_blog()
+            ask_create_blog()
         elif selection == 'l':
             print_blogs()
         elif selection == 'r':
             ask_create_post()
         elif selection == 'p':
-            'do some thing'
+            ask_create_post()
         selection = input(MENUE_PROMT)
 
 
@@ -35,7 +35,7 @@ def print_blogs():
         print('- {}'.format(blog))
 
 
-def aske_create_blog():
+def ask_create_blog():
     title = input('Enter your blog title')
     author = input('Enter youre blog author')
     blogs[title] = Blog(title, author)
